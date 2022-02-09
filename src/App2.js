@@ -9,14 +9,13 @@ const config = require('./config.json')
 
 // Functional COmpoent
 
-function App() {
+function App2() {
   //1. State/ Hook Variables
 
   const [student,setStudent] = useState({
     data:[]
   });//Empty Array
-
-  const [paginationItem,setPaginationItem] = useState([<Pagination.Item >1</Pagination.Item>,<Pagination.Item>2</Pagination.Item>,<Pagination.Item>3</Pagination.Item>])// Empty Array
+  const [paginationItem,setPaginationItem] = useState([]);
 
   //2. Functions defination
   let first = (e)=>{
@@ -24,7 +23,7 @@ function App() {
     if(student.meta.pagination.page !== 1){
       getStudents(1); // Actual Arguemtn
     }
-    
+   
     
   }
   let last = (e)=>{
@@ -38,9 +37,8 @@ function App() {
   let prev = (e)=>{
     console.log('Prev');
     if(student.meta.pagination.page !== 1){
-      getStudents(student.meta.pagination.page - 1 );
+      getStudents(student.meta.pagination.page - 1); // Actual Arguemtn
     }
-    
 
   }
   let next = (e)=>{
@@ -54,6 +52,23 @@ function App() {
   let getStudents2 = (e)=>{
     console.log(student);
 
+  }
+  let handleGoTo = (e) => {
+    //console.log(e.target.innerHTML);
+    console.log(e.target);
+    var pageno = e.target.innerHTML;
+    console.log(pageno);
+    getStudents(parseInt(pageno));
+
+    var li = e.target.closest('ul').querySelectorAll('li');
+    li.forEach(element => {
+      element.classList.remove('active');
+    });
+    var x = e.target.closest('li').classList;
+    x.add('active');
+    //x.add('disabled');
+   
+    
   }
 
   let getStudents = (pageno=1)=>{// e = event //ES6 Fat arrow functions // default argument
@@ -77,13 +92,17 @@ function App() {
           //Set karne se pahle
           //console.log('before set',student);
           //not set the student data in student hook variable
+          if(student.meta){
+            PaginationItem()
+          }
           setStudent(data);
           //Set karne ke baad data kya hai
 
 
           //array.map(function(currentValue, index, arr));
-
-
+          //PaginationItem()
+          
+          
         }).catch((err)=>{
           console.log(err);
         });
@@ -94,11 +113,27 @@ function App() {
     }
   }
 
+  function PaginationItem(){
+    var rows = [];
+    //console.log(student);
+    for (var i = 1; i <= student.meta.pagination.pageCount; i++) {
+      if(i === student.meta.pagination.page){
+        rows.push(<Pagination.Item active key={i} onClick={(e)=>{ handleGoTo(e) }}>{i}</Pagination.Item>);  
+      }else{
+        rows.push(<Pagination.Item key={i} onClick={(e)=>{ handleGoTo(e) }}>{i}</Pagination.Item>);  
+      }
+
+    }
+    console.log('rows',rows)
+    setPaginationItem(rows);
+    
+  }
+
   //3. Return statement JSX
   return (
     <>
+        <h1 className="d-flex justify-content-center">Read Operation with Pagination</h1>
         <div className="d-flex justify-content-center">
-          <h1>Read Operation</h1>
           <Button onClick={(e)=>{ getStudents() }}>Get My Friends</Button>
         </div>
         
@@ -140,15 +175,11 @@ function App() {
             <Pagination className="d-flex justify-content-center">
               <Pagination.First onClick={(e)=>{ first(e); }} />
               <Pagination.Prev onClick={(e)=>{ prev(e); }} />
-
               {
-                paginationItem.length > 0 &&
                 paginationItem.map(function(currentValue, index, arr){
-                    return currentValue//JSX
+                  return currentValue;
                 })
               }
-              
-
               <Pagination.Next onClick={(e)=>{ next(e); }} />
               <Pagination.Last onClick={(e)=>{ last(e); }} />
             </Pagination>
@@ -159,4 +190,4 @@ function App() {
   );
 }
 
-export default App;
+export default App2;
