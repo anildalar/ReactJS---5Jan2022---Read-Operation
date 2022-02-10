@@ -16,9 +16,14 @@ function App() {
     data:[]
   });//Empty Array
 
-  const [paginationItem,setPaginationItem] = useState([<Pagination.Item >1</Pagination.Item>,<Pagination.Item>2</Pagination.Item>,<Pagination.Item>3</Pagination.Item>])// Empty Array
+  const [paginationItem,setPaginationItem] = useState([])// Empty Array
 
   //2. Functions defination
+  let goToPage = (e)=>{
+    console.log(e.target.innerHTML);
+    var pageno = parseInt(e.target.innerHTML);
+    getStudents(pageno);
+  }
   let first = (e)=>{
     console.log('First');
     if(student.meta.pagination.page !== 1){
@@ -80,6 +85,18 @@ function App() {
           setStudent(data);
           //Set karne ke baad data kya hai
 
+          var start = data.meta.pagination.page
+          var arr = []; //empty array;
+          for (let i = start; i <= data.meta.pagination.pageCount; i++) {
+            if(i == start){
+              arr.push(<Pagination.Item active onClick={(e)=>{ goToPage(e) }}>{i}</Pagination.Item>); 
+            }else{
+              arr.push(<Pagination.Item onClick={(e)=>{ goToPage(e) }}>{i}</Pagination.Item>);
+            }
+            
+          }
+
+          setPaginationItem(arr)
 
           //array.map(function(currentValue, index, arr));
 
@@ -142,7 +159,7 @@ function App() {
               <Pagination.Prev onClick={(e)=>{ prev(e); }} />
 
               {
-                paginationItem.length > 0 &&
+              
                 paginationItem.map(function(currentValue, index, arr){
                     return currentValue//JSX
                 })
