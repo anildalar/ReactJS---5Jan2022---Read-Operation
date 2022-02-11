@@ -87,7 +87,7 @@ function App() {
 
           var start = data.meta.pagination.page
           var arr = []; //empty array;
-          for (let i = start; i <= data.meta.pagination.pageCount; i++) {
+          for (let i = 1; i <= data.meta.pagination.pageCount; i++) {
             if(i == start){
               arr.push(<Pagination.Item active onClick={(e)=>{ goToPage(e) }}>{i}</Pagination.Item>); 
             }else{
