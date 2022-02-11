@@ -4,7 +4,9 @@ import './App.css';
 
 import { Button, Form, Pagination, Table } from 'react-bootstrap';
 import React, { useState } from 'react';
+import swal from 'sweetalert';
 
+const axios = require('axios');
 const config = require('./config.json')
 
 // Functional COmpoent
@@ -19,6 +21,34 @@ function App() {
   const [paginationItem,setPaginationItem] = useState([])// Empty Array
 
   //2. Functions defination
+  let handleDelete = (e)=>{
+    //function chaining
+
+    console.log(e.target.closest('tr').querySelector('td:first-child').innerHTML); //e is a event object
+    var delid = parseInt(e.target.closest('tr').querySelector('td:first-child').innerHTML);
+    console.log(delid);
+
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then( async (willDelete) => {
+      if (willDelete) {
+
+       //API Call
+       try {
+          let po = await axios(); 
+       } catch (error) {
+          console.log(error)
+       }
+      } else {
+        //swal("Your imaginary file is safe!");
+      }
+    });
+  }
   let goToPage = (e)=>{
     console.log(e.target.innerHTML);
     var pageno = parseInt(e.target.innerHTML);
@@ -144,7 +174,7 @@ function App() {
                           <td>
                             <Button variant="success" size="sm">View</Button>&nbsp;
                             <Button variant="primary" size="sm">Edit</Button>&nbsp;
-                            <Button variant="danger" size="sm">Delete</Button>
+                            <Button variant="danger" onClick={(e)=>{ handleDelete(e) }} size="sm">Delete</Button>
                           </td>
                         </tr>
                     )//JSX
