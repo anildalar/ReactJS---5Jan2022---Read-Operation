@@ -11,7 +11,7 @@ const config = require('./config.json')
 
 // Functional COmpoent
 
-function App() {
+function LoadMore2() {
   //1. State/ Hook Variables
 
   const [student,setStudent] = useState({
@@ -40,7 +40,7 @@ function App() {
 
        //API Call
        try {
-          let po = await axios.delete('http://localhost:1337/api/friends/'+delid); 
+          let po = await axios(); 
        } catch (error) {
           console.log(error)
        }
@@ -56,42 +56,8 @@ function App() {
     getStudents(pageno);
   }
 
-  let first = (e)=>{
-    console.log('First');
-    if(student.meta.pagination.page !== 1){
-      getStudents(1); // Actual Arguemtn
-    }
-    
-    
-  }
-
-  let last = (e)=>{
-    console.log('Last');
-
-    if(student.meta.pagination.page !== student.meta.pagination.pageCount){
-      getStudents(student.meta.pagination.pageCount);
-    }
-
-  }
-
-  let prev = (e)=>{
-    console.log('Prev');
-    if(student.meta.pagination.page !== 1){
-      getStudents(student.meta.pagination.page - 1 );
-    }
-    
-
-  }
-
-  let next = (e)=>{
-    console.log('Next');
-    if(student.meta.pagination.page !== student.meta.pagination.pageCount){
-      getStudents(student.meta.pagination.page + 1);
-    }
-    
-
-  }
-
+  
+  
   let getStudents2 = (e)=>{
     console.log(student);
 
@@ -151,7 +117,7 @@ function App() {
   return (
     <>
         <div className="d-flex justify-content-center">
-          <h1>Read Operation</h1>
+          <h1>Read Operation With Load More</h1>
           <Button onClick={(e)=>{ getStudents() }}>Get My Friends</Button>
         </div>
         
@@ -190,21 +156,7 @@ function App() {
 
               </tbody>
             </Table>
-            <Pagination className="d-flex justify-content-center">
-              <Pagination.First onClick={(e)=>{ first(e); }} />
-              <Pagination.Prev onClick={(e)=>{ prev(e); }} />
-
-              {
-              
-                paginationItem.map(function(currentValue, index, arr){
-                    return currentValue//JSX
-                })
-              }
-              
-
-              <Pagination.Next onClick={(e)=>{ next(e); }} />
-              <Pagination.Last onClick={(e)=>{ last(e); }} />
-            </Pagination>
+            
           </React.Fragment>
         }
         
@@ -212,4 +164,4 @@ function App() {
   );
 }
 
-export default App;
+export default LoadMore2;

@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import LoadMore from './LoadMore';
+import InfiniteScoll from './InfiniteScoll';
+import LoadMore2 from './LoadMore2';
+
 
 // ReactDOM.render(What,Where);
 ReactDOM.render(
