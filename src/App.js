@@ -5,6 +5,7 @@ import './App.css';
 import { Button, Form, Pagination, Table } from 'react-bootstrap';
 import React, { useState } from 'react';
 import swal from 'sweetalert';
+import URL from './Helper';
 
 const axios = require('axios');
 const config = require('./config.json')
@@ -23,7 +24,8 @@ function App() {
   //2. Functions defination
   let handleDelete = (e)=>{
     //function chaining
-
+    //var keywork has a global scope
+    var tr = e.target.closest('tr');
     console.log(e.target.closest('tr').querySelector('td:first-child').innerHTML); //e is a event object
     var delid = parseInt(e.target.closest('tr').querySelector('td:first-child').innerHTML);
     console.log(delid);
@@ -40,7 +42,9 @@ function App() {
 
        //API Call
        try {
-          let po = await axios.delete('http://localhost:1337/api/friends/'+delid); 
+          let po = await axios.delete(`${URL}/api/friends/${delid}`); 
+          tr.remove();
+          swal("Good job!", "You friend is deleted successfully!", "success");
        } catch (error) {
           console.log(error)
        }

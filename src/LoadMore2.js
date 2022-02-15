@@ -15,7 +15,15 @@ function LoadMore2() {
   //1. State/ Hook Variables
 
   const [student,setStudent] = useState({
-    data:[]
+    data:[], //JS Array // [{},{}] = Array of Object
+    meta:{
+      pagination:{
+        page: '',
+        pageCount: '',
+        pageSize: '',
+        total: ''
+      }
+    } //JS Object
   });//Empty Array
 
   const [paginationItem,setPaginationItem] = useState([])// Empty Array
@@ -84,21 +92,14 @@ function LoadMore2() {
           //Set karne se pahle
           //console.log('before set',student);
           //not set the student data in student hook variable
-          setStudent(data);
+          setStudent({
+            ...student,
+            data: student.data.concat(data.data), //1. Array student.data  //2. data.data
+            meta:data.meta
+          });
           //Set karne ke baad data kya hai
-
-          var start = data.meta.pagination.page
-          var arr = []; //empty array;
-          for (let i = 1; i <= data.meta.pagination.pageCount; i++) {
-            if(i == start){
-              arr.push(<Pagination.Item active onClick={(e)=>{ goToPage(e) }}>{i}</Pagination.Item>); 
-            }else{
-              arr.push(<Pagination.Item onClick={(e)=>{ goToPage(e) }}>{i}</Pagination.Item>);
-            }
-            
-          }
-
-          setPaginationItem(arr)
+         
+        
 
           //array.map(function(currentValue, index, arr));
 
@@ -111,6 +112,15 @@ function LoadMore2() {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  let loadMore = (e)=>{
+    //alert('OK OK OKOK');
+    //if i am on the last page then loadMore should not call the api
+   
+      getStudents(student.meta.pagination.page + 1 );
+    
+    
   }
 
   //3. Return statement JSX
@@ -152,11 +162,15 @@ function LoadMore2() {
                     )//JSX
                   })
                 }
-                
-
               </tbody>
             </Table>
-            
+            {
+              (student.meta.pagination.page !== student.meta.pagination.pageCount) &&
+              <div className="d-flex justify-content-center">
+                <Button variant="primary" onClick={(e)=>{ loadMore(e);  }}>Load More</Button>
+              </div>
+            }
+           
           </React.Fragment>
         }
         

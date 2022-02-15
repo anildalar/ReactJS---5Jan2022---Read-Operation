@@ -12,7 +12,7 @@ import LoadMore2 from './LoadMore2';
 // ReactDOM.render(What,Where);
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <LoadMore2 />
   </React.StrictMode>,
   document.getElementById('root')
 );
