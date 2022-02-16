@@ -1,0 +1,17 @@
+Infinite Scoll
+
+1. What Event we will work ?
+Ans:- Scoll Event (Window)
+
+2. How we can detact the scroll event ?
+
+3. How we can detact if we reached the bottom?
+
+window.pageYOffset === window.scrollY
+
+Window is JS Object i.e {
+				1. P:V
+				2. Functions/Methods
+			}
+JS Array []
+
