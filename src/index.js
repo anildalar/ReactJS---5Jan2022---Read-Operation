@@ -7,12 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import LoadMore from './LoadMore';
 import InfiniteScoll from './InfiniteScoll';
 import LoadMore2 from './LoadMore2';
+import InfiniteScroll2 from './InfiniteScroll2';
 
 
 // ReactDOM.render(What,Where);
 ReactDOM.render(
   <React.StrictMode>
-    <LoadMore2 />
+    <InfiniteScroll2 />
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,6 +1,6 @@
 import './App.css';
-import { Button, Form, Pagination, Table } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
+import { Button, Form, Pagination, Spinner, Table } from 'react-bootstrap';
+import React, { useEffect, useState  } from 'react';
 import swal from 'sweetalert';
 import URL from './Helper';
 
@@ -15,28 +15,62 @@ function InfiniteScoll() {
 
     const [student,setStudent] = useState({
                                             data:[],
-                                            meta: {
+                                            meta:{
                                                 pagination:{
-                                                    
+                                                  page: 1,
+                                                  pageCount: '',
+                                                  pageSize: '',
+                                                  total: ''
                                                 }
-                                            }
+                                              } //JS Object
                                           });//Empty Array  
     const [offset, setOffset] = useState(0);
     const [reachedBottom,setReachedBottom] = useState(false);
+    const [isLoading,setIsLoading] = useState(false);
 
+    //const inputElement = useRef();                                         
     
     useEffect(() => {
         getStudents(1);
         const onScroll = () => {
-            setOffset(window.pageYOffset);
-            console.log(window);
+            //console.log('Hello');
+            //console.log(inputElement);
+            //console.log(document.documentElement.clientHeight);
+            //console.log(window.innerHeight);
+            //console.log(window.pageYOffset);
+            console.log(window.pageYOffset);
+            //console.log(window.innerHeight);
+            //console.log(window);
+            //console.log(window.scrollTop);
+
+            //setOffset(window.pageYOffset);
+            
+            //window.pageYOffset == window.scrollY
+            //console.log(window.pageYOffset);
+            console.log(0.15*window.innerHeight);
+
+            if(window.pageYOffset > (0.15 * window.innerHeight) /* && window.pageYOffset < (0.20 * window.innerHeight) */){
+               
+                setReachedBottom(true);
+                console.log("Bottom Reached");
+                //console.log(student.meta.pagination.page);
+                if(reachedBottom === true && (student.meta.pagination.page !== student.meta.pagination.pageCount)){
+                    setIsLoading(true);
+                    getStudents(parseInt(student.meta.pagination.page) + 1);
+                    setIsLoading(false);
+                }
+                
+                
+
+                //console.log(student)
+            }
             
         };
         // clean up code
-        window.removeEventListener('scroll', onScroll);
-        window.addEventListener('scroll', onScroll, { passive: true });
+       // window.removeEventListener('scroll', onScroll);
+        window.addEventListener('scroll', onScroll);
         
-    }, []);
+    }, [reachedBottom,isLoading]);
     //console.log(offset);
     
     //2. Functions defination
@@ -74,8 +108,8 @@ function InfiniteScoll() {
     }
 
     let getStudents = (pageno=1) =>{// e = event //ES6 Fat arrow functions // default argument
-        console.log();
-        console.log('good morning')
+        //console.log();
+       // console.log('good morning')
         //Alway wrap the api calling code inside trycatch block
         try {
             //Call the api
@@ -90,26 +124,25 @@ function InfiniteScoll() {
                 return data.json();
             }).then((data)=>{
                 //console.log('current Value of student is 1',student);
+                console.log(student.data)
                 setStudent({
                             ...student,
                             data:student.data.concat(data.data),
                             meta:data.meta
                         });
                 
+                
             }).catch((err)=>{
-                console.log(err);
+                //console.log(err);
             });
 
             //console.log('current Value of student is 3',student);
         } catch (error) {
-            console.log(error)
+            //console.log(error)
         }
     }
-
-
     //3. Return statement JSX
     return (
-        <>
             <div>
                 <div className="text-center">
                     <h1>Read Operation Using Infinite Scoll<br /></h1>
@@ -150,11 +183,18 @@ function InfiniteScoll() {
                                 }
                             </tbody>
                         </Table>
+                        {
+                            isLoading &&
+                            <div className="d-flex justify-content-center">
+                                <Spinner animation="grow" variant="success" />
+                            </div>
+                        }
+                        
+                        
                     </React.Fragment>
                 }
                 
             </div>
-        </>
     );
 }
 
