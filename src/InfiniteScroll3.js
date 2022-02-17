@@ -11,14 +11,14 @@ const config = require('./config.json')
 
 // Functional COmpoent
 
-function InfiniteScroll2() {
+function InfiniteScroll3() {
   //1. State/ Hook Variables
 
   const [student,setStudent] = useState({
     data:[], //JS Array // [{},{}] = Array of Object
     meta:{
       pagination:{
-        page: 1,
+        page: '',
         pageCount: '',
         pageSize: '',
         total: ''
@@ -28,27 +28,15 @@ function InfiniteScroll2() {
 
   const [paginationItem,setPaginationItem] = useState([])// Empty Array
 
-  //useEffect hook which call after the page render
-
-  //useEffect is a function which call after the page reload
-
   useEffect(()=>{
     getStudents();
     let scrollFunction = (e)=>{
-      //console.log(window)
-      //console.log('Page Y Offset',window.pageYOffset);
-      console.log('Scroll Y ',window.scrollY);
-
-      //window.pageYOffset = window.scrollY
-
-
-      //console.log(window.innerHeight);
-      if(window.scrollY >= 40 ){
-        console.log('reached Bottom');
-        getStudents(parseInt(student.meta.pagination.page) + 1)
-      }
+      //console.log()
+      console.log(window) ;
+      //console.log(window.pageYOffset)
+      //window.innerHeight == 
     }
-    //console.log(window) 
+    
     //document.addEventListener(event, function, useCapture);
     //1. window.addEventListener('scroll',function(){});
     //2. window.addEventListener('scroll',()=>{});
@@ -57,7 +45,6 @@ function InfiniteScroll2() {
 
 
   //2. Functions defination
-  
 
   let handleDelete = (e)=>{
     //function chaining
@@ -89,25 +76,30 @@ function InfiniteScroll2() {
   }
 
   let getStudents = (pageno=1)=>{// e = event //ES6 Fat arrow functions // default argument
-    //console.log(config.base_url);
-    //console.log('good morning')
+    console.log(config.base_url);
+    console.log('good morning')
     //Alway wrap the api calling code inside trycatch block
     try {
+        //Call the api
+        // Fetch API
+        //AXIOS
 
+        //What is the api
+        //Fetch API with Promise Chain
         fetch(`${config.base_url}/api/friends?pagination[page]=${pageno}&pagination[pageSize]=15`)
         .then((data)=>{
           //let make data json readable
           return data.json();
         }).then((data)=>{
-          //console.log(data);
+          console.log(data);
 
           //Set karne se pahle
           //console.log('before set',student);
           //not set the student data in student hook variable
           setStudent({
             ...student,
-            data: student.data.concat(data.data), //reuse + new value //1. Array student.data  //2. data.data
-            meta:data.meta //overwrite
+            data: student.data.concat(data.data), //1. Array student.data  //2. data.data
+            meta:data.meta
           });
           //Set karne ke baad data kya hai
          
@@ -122,7 +114,7 @@ function InfiniteScroll2() {
 
 
     } catch (error) {
-      //console.log(error)
+      console.log(error)
     }
   }
 
@@ -177,4 +169,4 @@ function InfiniteScroll2() {
   );
 }
 
-export default InfiniteScroll2;
+export default InfiniteScroll3;

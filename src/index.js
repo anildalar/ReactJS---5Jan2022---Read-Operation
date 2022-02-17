@@ -8,6 +8,7 @@ import LoadMore from './LoadMore';
 import InfiniteScoll from './InfiniteScoll';
 import LoadMore2 from './LoadMore2';
 import InfiniteScroll2 from './InfiniteScroll2';
+import ReactDataTable from './ReactDataTable';
 
 
 // ReactDOM.render(What,Where);
